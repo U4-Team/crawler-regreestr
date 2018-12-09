@@ -77,18 +77,21 @@ class RegreestrCrawler(CrawlSpider):
             field, value = row.css('td')
             field = field.css('::text').extract_first().strip()
             if field == 'Статус юридического лица:':
-                value = value.css('::text').extract_first().strip()
-                value = True if value == 'Действующее' else False
+                value = value.css('::text').extract_first()
+                value = True if value and value.strip() == 'Действующее' else False
                 data['ACTIVE'] = value
             elif field == 'Полное наименование:':
-                value = value.css('::text').extract_first().strip()
-                data['COMPANY_FULL_NAME'] = value
+                value = value.css('::text').extract_first()
+                if value:
+                    data['COMPANY_FULL_NAME'] = value.strip()
             elif field == 'ИНН:':
-                value = value.css('::text').extract_first().strip()
-                data['INN'] = value
+                value = value.css('::text').extract_first()
+                if value:
+                    data['INN'] = value.strip()
             elif field == 'ОГРН:':
-                value = value.css('::text').extract_first().strip()
-                data['OGRN'] = value
+                value = value.css('::text').extract_first()
+                if value:
+                    data['OGRN'] = value.strip()
             elif field == 'Юридический адрес:':
                 pass
             elif field == 'Руководитель:':
@@ -166,9 +169,10 @@ class RegreestrCrawler(CrawlSpider):
             else:
                 field = field.css('::text').extract_first().strip()
                 if field == 'Уставный капитал':
-                    value = value.css('::text').extract_first().strip().replace(' ', '').replace(',', '.')
-                    value = float(value)
-                    data['AUTH_CAPICAL'] = value
+                    value = value.css('::text').extract_first()
+                    if value:
+                        value = float(value.strip().replace(' ', '').replace(',', '.'))
+                        data['AUTH_CAPICAL'] = value
                 else:
                     pass
 
@@ -182,13 +186,16 @@ class RegreestrCrawler(CrawlSpider):
             else:
                 field = field.css('::text').extract_first().strip()
                 if field == 'Дата ликвидации компании':
-                    value = value.css('::text').extract_first().strip()
-                    data['LIQUIDATION']['DATE'] = datetime.strptime(value, '%d.%m.%Y')
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['LIQUIDATION']['DATE'] = datetime.strptime(value.strip(), '%d.%m.%Y')
                 elif field == 'Способ прекращения юридического лица':
-                    value = value.css('::text').extract_first().strip()
-                    data['LIQUIDATION']['TYPE'] = value.split(' - ')
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['LIQUIDATION']['TYPE'] = value.strip().split(' - ')
                 elif field == 'Регистрирующий ликвидацию налоговый орган':
-                    value = value.css('::text').extract_first().strip()
-                    data['LIQUIDATION']['AUTHORITY'] = value
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['LIQUIDATION']['AUTHORITY'] = value.strip()
                 else:
                     pass
