@@ -13,5 +13,7 @@ class MongoPipeline(LoggerMixin):
 
     def process_item(self, item, spider):
         self.mongo_repo.store_company(item)
-        self.logger.info('Stored: (%s) %s', item['INN'], item['COMPANY_SHORT_NAME'] if 'COMPANY_SHORT_NAME' in item else '---')
+        inn = item.get('INN')
+        short_name = item.get('COMPANY_SHORT_NAME')
+        self.logger.info('Stored: (%s) %s', inn, short_name)
 
