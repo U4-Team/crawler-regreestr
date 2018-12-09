@@ -161,7 +161,7 @@ class RegreestrCrawler(CrawlSpider):
             else:
                 field = field.css('::text').extract_first().strip()
                 if field == 'Уставный капитал':
-                    value = value.css('::text').extract_first().strip().replace(' ', '')
+                    value = value.css('::text').extract_first().strip().replace(' ', '').replace(',', '.')
                     value = float(value)
                     data['AUTH_CAPICAL'] = value
                 else:
