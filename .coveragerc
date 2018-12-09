@@ -1,0 +1,14 @@
+[run]
+include = ./*
+branch = True
+
+[report]
+exclude_lines =
+  pragma: no cover
+  def __str__
+omit =
+  # tests
+  */tests.py
+  */tests/*
+
+show_missing = True
