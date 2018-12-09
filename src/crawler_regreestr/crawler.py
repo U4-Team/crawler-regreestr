@@ -42,14 +42,16 @@ class RegreestrCrawler(CrawlSpider):
         firm_info_blocks = main.css('div.firm-info')
         
         # parse data
-        self.parse_short_name(container, data)
+        self.parse_short_name(response, data)
         for block in main.css('div.row > div > table'):
             self.parse_block(block, data)
         
         yield data
 
     def parse_short_name(self, container, data):
-        data['COMPANY_SHORT_NAME'] = container.css('h1::text').extract_first().strip()
+        name = container.css('h1::text').extract_first()
+        if name:
+            data['COMPANY_SHORT_NAME'] = name.strip()
 
     def parse_block(self, block, data):
         criteria_1 = block.css('tr:nth-child(1) td:nth-child(1)::text').extract_first()
