@@ -92,8 +92,9 @@ class RegreestrCrawler(CrawlSpider):
             elif field == 'Юридический адрес:':
                 pass
             elif field == 'Руководитель:':
-                value = value.css('::text').extract_first().strip().split(':')[1].strip()
-                data['CEO'] = value
+                value = value.css('::text').extract_first().strip().split(':')[1]
+                if value:
+                    data['CEO'] = value.strip()
             else:
                 pass
 
