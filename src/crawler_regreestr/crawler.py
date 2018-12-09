@@ -107,24 +107,29 @@ class RegreestrCrawler(CrawlSpider):
             else:
                 field = field.css('::text').extract_first().strip()
                 if field == 'КПП':
-                    value = value.css('::text').extract_first().strip()
-                    data['KPP'] = value
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['KPP'] = value.strip()
                 elif field == 'Организационно-правовая форма (ОПФ)':
-                    value = value.css('::text').extract_first().strip()
-                    data['OPF'] = value
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['OPF'] = value.strip()
                 elif field == 'Регион':
-                    value = value.css('::text').extract_first().strip()
-                    if value != 'город Москва':
+                    value = value.css('::text').extract_first()
+                    if value and value != 'город Москва':
                         return # we parse only Moscow
                 elif field == 'Юридический адрес':
-                    value = value.css('::text').extract_first().strip()
-                    data['LEGAL_ADDRESS'] = value
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['LEGAL_ADDRESS'] = value.strip()
                 elif field == 'Дата регистрации':
-                    value = value.css('::text').extract_first().strip()
-                    data['REGISRTRATION_DATE'] = datetime.strptime(value, '%d.%m.%Y')
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['REGISRTRATION_DATE'] = datetime.strptime(value.strip(), '%d.%m.%Y')
                 elif field == 'Дата регистрации':
-                    value = value.css('::text').extract_first().strip()
-                    data['REGISRTRATION_DATE'] = datetime.strptime(value, '%d.%m.%Y')
+                    value = value.css('::text').extract_first()
+                    if value:
+                        data['REGISRTRATION_DATE'] = datetime.strptime(value.strip(), '%d.%m.%Y')
                 else:
                     pass
 
