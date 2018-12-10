@@ -13,7 +13,6 @@ class RegreestrCrawler(CrawlSpider):
     allowed_domains = ['moskva.regreestr.com']
     start_urls = ['http://moskva.regreestr.com']
     rules = (
-       # Extract links matching 'item.php' and parse them with the spider's method parse_item
         Rule(
             LinkExtractor(
                 allow=(r'/page[0-9]+'),
@@ -23,7 +22,6 @@ class RegreestrCrawler(CrawlSpider):
         ),
         Rule(
             LinkExtractor(
-                # allow=('http://moskva.regreestr.com/10830235'),
                 allow=(r'/[0-9]+'),
                 canonicalize=True
             ),
@@ -125,10 +123,6 @@ class RegreestrCrawler(CrawlSpider):
                     value = value.css('::text').extract_first()
                     if value:
                         data['LEGAL_ADDRESS'] = value.strip()
-                elif field == 'Дата регистрации':
-                    value = value.css('::text').extract_first()
-                    if value:
-                        data['REGISRTRATION_DATE'] = datetime.strptime(value.strip(), '%d.%m.%Y')
                 elif field == 'Дата регистрации':
                     value = value.css('::text').extract_first()
                     if value:
